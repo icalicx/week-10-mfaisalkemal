@@ -1,0 +1,274 @@
+openapi: 3.0.0
+info:
+  title: Simple API using Typescript, NodeJS, Express, and MongoDB.
+  description: With Authentication and Authorization include BCRYPT and JWT.
+  version: 1.0.0
+servers:
+  - url: http://127.0.0.1:3000
+    description: Development Server
+components:
+  securitySchemes:
+    bearerAuth:  
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+paths:
+  /register:
+    post:
+      summary: register new member
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                role:
+                  type: string
+                  enum:
+                  - maker
+                  - approver
+                  - admin
+                password:
+                  type: string
+                  minLength: 8
+                  pattern: "^[a-zA-Z0-9]+$"
+              required:
+                - "username"
+      responses:
+        '201':
+          description: Create member
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '409':
+          description: Usename already exist
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string                      
+        '500':
+          description: Error when create member
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string          
+  /login:
+      post:
+        summary: login to get token
+        requestBody:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  username:
+                    type: string
+                  password:
+                    type: string
+        responses:
+          '401':
+            description: username not exist or password wrong
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    error:
+                      type: string
+          '200':
+            description: succes get token
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    token:
+                      type: string
+          '500':
+            description: error while logging in
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    error:
+                      type: string                        
+                                  
+  /transfer:
+      post:
+        security:
+          - bearerAuth: []
+
+        summary: register new member
+        requestBody:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  amount:
+                    type: number
+                  currency:
+                    type: string
+                  sourceAccount:
+                    type: string
+                  destinationAccount:
+                    type: string
+        responses:
+          '401':
+            description: No token or invalid token
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    error:
+                      type: string        
+          '201':
+            description: Create member
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+                          
+          '500':
+            description: Error when create member
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    error:
+                      type: string
+      get:
+        security:
+          - bearerAuth: []
+
+        summary: get all transfer data
+        requestBody:
+          content:
+            application/json:
+              schema:
+                type: object
+        responses:
+          '200':
+            description: Display all transfer data
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    transfersWithLocalTime:
+                      type: object
+                      properties:                        
+                        _id:
+                          type: string
+                        amount:
+                          type: string
+                        currency:
+                          type: number
+                        sourceAccount:
+                          type: string                        
+                        destinationAccount:
+                          type: string
+                        status:
+                          type: string
+                        createdAtLocalTime:
+                          type: string                          
+                        updatedAtLocalTime:
+                          type: string
+          '401':
+            description: No token or wrong token
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    error:
+                      type: string
+                          
+          '403':
+            description: Only maker and approver allow to access
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    error:
+                      type: string
+  /transfer/:id:                      
+      patch:
+        security:
+          - bearerAuth: []
+                
+        summary: register new member
+        requestBody:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:                  
+                  status:
+                    type: string
+        responses:
+          '401':
+            description: No token or invalid token
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    error:
+                      type: string        
+          '403':
+            description: only approver that has right
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    error:
+                      type: string
+                          
+          '200':
+            description: Update status success
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+          '404':
+            description: Transfer not found or status is not pending
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    error:
+                      type: string
+          '500':
+            description: Error when update status
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    error:
+                      type: string
