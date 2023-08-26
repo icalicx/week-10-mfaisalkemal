@@ -12,8 +12,16 @@ const app = express();
 
 app.use(bodyParser.json());
 
+const openApiPath = './doc/openapi.yaml';
+const file = fs.readFileSync(openApiPath, 'utf8');
+const swaggerDocument = yaml.load(file);
+app.use('/swaggeropenapi', swaggerUi.serve, swaggerUi.setup(swaggerDocument!))
+
+    app.use(openApiValidator.middleware({
+        apiSpec: openApiPath,
+        validateRequests: true
+    }));
+
 app.use('/', authRoutes);
 
-connectDb().then(() => {
-    app.listen(3000)
-});
+app.listen(3000);
