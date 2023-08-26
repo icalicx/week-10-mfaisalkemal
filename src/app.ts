@@ -10,6 +10,13 @@ import { Request, Response, NextFunction } from 'express';
 
 const app = express();
 
+app.use((req: Request, res: Response, next: NextFunction) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    next();
+});
+
 app.use(bodyParser.json());
 
 const openApiPath = './doc/openapi.yaml';
@@ -30,12 +37,6 @@ app.use(( err: Error, req: Request, res: Response, next: NextFunction ) => {
         errors: err.errors,
     })
 })
-
-// connectDb().then(() => {
-//     app.listen(3000, () => {
-//         console.log(`Server is running on port 3000`);
-//     });
-// });
 
 connectDb();
 app.listen(3000);
