@@ -207,9 +207,6 @@ paths:
         security:
           - bearerAuth: []
         summary: change status
-          - name: id
-            in: path
-            required: true
         requestBody:
           content:
             application/json:
