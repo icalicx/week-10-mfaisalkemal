@@ -158,13 +158,6 @@ paths:
       get:
         security:
           - bearerAuth: []
-
-        summary: get all transfer data
-        requestBody:
-          content:
-            application/json:
-              schema:
-                type: object
         responses:
           '200':
             description: Display all transfer data
