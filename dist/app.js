@@ -22,12 +22,6 @@ app.use(openApiValidator.middleware({
     validateRequests: true
 }));
 app.use('/', authRoutes_1.default);
-app.use((err, req, res, next) => {
-    res.status(err.status || 500).json({
-        message: err.message,
-        errors: err.errors,
-    });
-});
 (0, database_1.connectDb)().then(() => {
     app.listen(3000, () => {
         console.log(`Server is running on port 3000`);
