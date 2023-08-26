@@ -214,6 +214,7 @@ paths:
           description: Parameter description in CommonMark or HTML.
           schema:
             type : string
+            format: uuid
             minimum: 1        
         requestBody:
           content:
