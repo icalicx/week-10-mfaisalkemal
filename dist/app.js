@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const body_parser_1 = __importDefault(require("body-parser"));
 const authRoutes_1 = __importDefault(require("./routes/authRoutes"));
+const database_1 = require("./models/database");
 const swagger_ui_express_1 = __importDefault(require("swagger-ui-express"));
 const js_yaml_1 = __importDefault(require("js-yaml"));
 const fs_1 = __importDefault(require("fs"));
@@ -21,4 +22,16 @@ app.use(openApiValidator.middleware({
     validateRequests: true
 }));
 app.use('/', authRoutes_1.default);
+app.use((err, req, res, next) => {
+    res.status(err.status || 500).json({
+        message: err.message,
+        errors: err.errors,
+    });
+});
+// connectDb().then(() => {
+//     app.listen(3000, () => {
+//         console.log(`Server is running on port 3000`);
+//     });
+// });
+(0, database_1.connectDb)();
 app.listen(3000);
