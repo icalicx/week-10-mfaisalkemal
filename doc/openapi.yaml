@@ -104,8 +104,7 @@ paths:
                   type: object
                   properties:
                     error:
-                      type: string                        
-                                  
+                      type: string                           
   /transfer:
       post:
         security:
@@ -194,7 +193,6 @@ paths:
                   properties:
                     error:
                       type: string
-                          
           '403':
             description: Only maker and approver allow to access
             content:
@@ -208,7 +206,6 @@ paths:
       patch:
         security:
           - bearerAuth: []
-                
         summary: change status
           - name: id
             in: path
