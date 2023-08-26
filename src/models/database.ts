@@ -3,10 +3,8 @@ import { config as dotenvConfig } from 'dotenv';
 
 dotenvConfig();
 
-const url = "mongodb+srv://mfaisalkemal:Hgfh7DiW8Kkub6yN@mfaisalkemal.pzizaup.mongodb.net/?retryWrites=true&w=majority";
-const dbName = "week-10-mfaisalkemal";
-//const url = process.env.MONGODB_URL || '';
-//const dbName = process.env.DB_NAME || '';
+const url = process.env.MONGODB_URL || '';
+const dbName = process.env.DB_NAME || '';
 
 let db: Db;
 

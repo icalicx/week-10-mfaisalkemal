@@ -4,10 +4,8 @@ exports.getDb = exports.connectDb = void 0;
 const mongodb_1 = require("mongodb");
 const dotenv_1 = require("dotenv");
 (0, dotenv_1.config)();
-const url = "mongodb+srv://mfaisalkemal:Hgfh7DiW8Kkub6yN@mfaisalkemal.pzizaup.mongodb.net/?retryWrites=true&w=majority";
-const dbName = "week-10-mfaisalkemal";
-//const url = process.env.MONGODB_URL || '';
-//const dbName = process.env.DB_NAME || '';
+const url = process.env.MONGODB_URL || '';
+const dbName = process.env.DB_NAME || '';
 let db;
 const connectDb = async () => {
     const client = new mongodb_1.MongoClient(url);
