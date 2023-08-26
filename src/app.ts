@@ -24,12 +24,23 @@ app.use('/swaggeropenapi', swaggerUi.serve, swaggerUi.setup(swaggerDocument!))
 
 app.use('/', authRoutes);
 
+// connectDb();
+// app.listen(3000);
+
+(async () => {
+    try {
+      await connectDb();
+      app.listen(3000, () => {
+        console.log(`Server is running on port 3000`);
+      });
+    } catch (error) {
+      console.error('Error starting the server:', error);
+    }
+})();
+
 app.use(( err: Error, req: Request, res: Response, next: NextFunction ) => {
     res.status(err.status || 500).json({
         message: err.message,
         errors: err.errors,
     })
 })
-
-connectDb();
-app.listen(3000);
