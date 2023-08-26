@@ -12,6 +12,12 @@ const js_yaml_1 = __importDefault(require("js-yaml"));
 const fs_1 = __importDefault(require("fs"));
 const openApiValidator = require("express-openapi-validator");
 const app = (0, express_1.default)();
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    next();
+});
 app.use(body_parser_1.default.json());
 const openApiPath = './doc/openapi.yaml';
 const file = fs_1.default.readFileSync(openApiPath, 'utf8');
@@ -28,10 +34,5 @@ app.use((err, req, res, next) => {
         errors: err.errors,
     });
 });
-// connectDb().then(() => {
-//     app.listen(3000, () => {
-//         console.log(`Server is running on port 3000`);
-//     });
-// });
 (0, database_1.connectDb)();
 app.listen(3000);
