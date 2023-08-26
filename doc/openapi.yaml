@@ -204,7 +204,7 @@ paths:
                   properties:
                     error:
                       type: string
-  /transfer/:id:                      
+  /transfer/{id}:                      
       patch:
         security:
           - bearerAuth: []
