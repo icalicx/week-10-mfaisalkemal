@@ -11,7 +11,5 @@ const app = (0, express_1.default)();
 app.use(body_parser_1.default.json());
 app.use('/', authRoutes_1.default);
 (0, database_1.connectDb)().then(() => {
-    app.listen(3000, () => {
-        console.log(`Server is running on port 3000`);
-    });
+    app.listen(3000);
 });
