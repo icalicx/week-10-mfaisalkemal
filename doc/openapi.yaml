@@ -207,6 +207,14 @@ paths:
         security:
           - bearerAuth: []
         summary: change status
+        parameters:
+          - name: id
+          in: path
+          required: true
+          description: Parameter description in CommonMark or HTML.
+          schema:
+            type : string
+            minimum: 1        
         requestBody:
           content:
             application/json:
